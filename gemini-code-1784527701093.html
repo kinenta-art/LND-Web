@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Management System - HRGA & L&D</title>
+    <style>
+        /* 1. RESET & CORPORATE VARIABLES */
+        :root {
+            --navy-dark: #001529;
+            --navy-primary: #002147;
+            --navy-light: #003b80;
+            --sky-blue: #00A4E4;
+            --sky-light: #e0f4fc;
+            --bg-light: #f0f4f8;
+            --text-dark: #333;
+            --text-gray: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* 2. HEADER & NAVBAR */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        header.scrolled {
+            background: rgba(0, 33, 71, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 15px 50px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        header .logo-text {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        header .logo-text span {
+            color: var(--sky-blue);
+        }
+
+        header nav ul.nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        header nav ul.nav-links > li {
+            margin: 0 15px;
+        }
+
+        header nav ul.nav-links > li > a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            padding: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header nav ul.nav-links > li > a:hover {
+            color: var(--sky-blue);
+        }
+
+        /* 3. HERO SECTION & ANIMATION */
+        .hero {
+            height: 100vh;
+            /* Pastikan file background.png ada di folder yang sama di GitHub */
+            background: url('background.png') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start; 
+            padding-left: 8%; 
+            padding-bottom: 8%;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(0,21,41,0.8) 0%, rgba(0,21,41,0.3) 50%, rgba(0,0,0,0) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 55%; 
+            text-align: left;
+            color: #fff;
+            background: rgba(0, 33, 71, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 12px;
+            border-left: 6px solid var(--sky-blue);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            animation: fadeSlideInOut 12s infinite ease-in-out;
+        }
+
+        @keyframes fadeSlideInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            45% { opacity: 1; transform: translateY(0); }
+            55% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #e0f4fc;
+        }
+
+        /* 4. SECTIONS LAYOUT */
+        section {
+            padding: 80px 10%;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: var(--navy-primary);
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background-color: var(--sky-blue);
+            bottom: 0;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        .section-header-wrapper {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* 5. PORTAL CARDS */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,33,71,0.08);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--navy-primary);
+            text-align: center;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,164,228,0.15);
+            border-top: 5px solid var(--sky-blue);
+        }
+
+        .card h3 {
+            color: var(--navy-primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--navy-primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: var(--sky-blue);
+            box-shadow: 0 5px 15px rgba(0,164,228,0.4);
+        }
+
+        /* 6. TRAINING SCHEDULE & COUNTDOWN */
+        .training-section {
+            background-color: #fff;
+        }
+
+        .countdown-container {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-primary) 100%);
+            color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 30px rgba(0,33,71,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 164, 228, 0.2);
+            border-radius: 50%;
+        }
+
+        .countdown-container h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .countdown-container h3 span {
+            color: var(--sky-blue);
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .time-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 20px;
+            border-radius: 10px;
+            min-width: 100px;
+            border: 1px solid rgba(0, 164, 228, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--sky-blue);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .time-box p {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sky-light);
+        }
+
+        /* History Table */
+        .history-table-wrapper {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .history-table {
+            width: 100%;
+            min-width: 600px; 
+            border-collapse: collapse;
+        }
+
+        .history-table th:nth-child(1), .history-table td:nth-child(1) { width: 140px; }
+        .history-table th:nth-child(2), .history-table td:nth-child(2) { min-width: 200px; }
+
+        .history-table th, .history-table td {
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f5;
+        }
+
+        .history-table th {
+            background-color: var(--navy-light);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        
+        .history-table tr:hover {
+            background-color: var(--sky-light);
+        }
+
+        .status-done {
+            background: rgba(0, 164, 228, 0.1);
+            color: var(--navy-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Elegan Button Annual */
+        .btn-annual {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 35px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--navy-primary);
+            background-color: #fff;
+            border: 1px solid rgba(0, 33, 71, 0.15);
+            border-radius: 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .btn-annual:hover {
+            background-color: var(--navy-primary);
+            color: #fff;
+            border-color: var(--navy-primary);
+            box-shadow: 0 6px 15px rgba(0, 33, 71, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-annual svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: fill 0.3s ease;
+        }
+
+        /* 7. PROFIL TEAM (Chat Group Style) */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,33,71,0.05);
+            border-left: 4px solid var(--navy-primary);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-3px);
+            border-left-color: var(--sky-blue);
+        }
+
+        .team-member .avatar {
+            width: 65px;
+            height: 65px;
+            background-color: var(--bg-light); 
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid var(--sky-light);
+            flex-shrink: 0;
+            /* Tambahan properti untuk memastikan foto fit di bulatan avatar */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .team-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .team-info h4 {
+            color: var(--navy-primary);
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+
+        .team-info p {
+            color: var(--sky-blue);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* 8. KONTAK SECTION */
+        .contact-section {
+            background: var(--navy-dark);
+            color: #fff;
+            text-align: center;
+        }
+
+        .contact-section .section-title {
+            color: #fff;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px 20px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            background: rgba(0, 164, 228, 0.1);
+            border-color: var(--sky-blue);
+            transform: translateY(-5px);
+        }
+
+        .contact-card h4 {
+            color: var(--sky-blue);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .contact-card p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-card a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-block;
+            background: var(--navy-primary);
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .contact-card a:hover {
+            background: var(--sky-blue);
+        }
+
+        /* 9. MEDIA QUERIES UNTUK RESPONSIVE (MOBILE ADJUSTMENTS) */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; }
+            header.scrolled { padding: 10px 20px; }
+            header .logo-text { font-size: 1.5rem; }
+            header nav ul.nav-links { display: none; } 
+
+            .hero { padding-left: 5%; padding-bottom: 12%; padding-right: 5%; }
+            .hero-content {
+                max-width: 100%; 
+                padding: 30px 20px;
+                border-left: none;
+                border-top: 4px solid var(--sky-blue); 
+                background: rgba(0, 33, 71, 0.65); 
+            }
+            .hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
+            .hero p { font-size: 0.95rem; }
+
+            section { padding: 60px 5%; }
+            .section-title { font-size: 1.8rem; margin-bottom: 35px; }
+
+            .portal-grid { gap: 20px; }
+            .portal-grid .card { padding: 25px 20px; }
+            .portal-grid .card p { display: none; } 
+            .portal-grid .card h3 { margin-bottom: 20px; font-size: 1.3rem; }
+            .portal-grid .btn { width: 100%; display: block; padding: 14px 0; }
+
+            .countdown-container { padding: 30px 15px; }
+            .countdown-container h3 { font-size: 1.3rem; line-height: 1.5; text-align: center; }
+            .countdown-container h3 span { 
+                display: block; 
+                margin-top: 5px; 
+                font-size: 1.4rem;
+            }
+            
+            .countdown-timer { gap: 10px; margin-top: 20px; }
+            .time-box { min-width: 65px; padding: 12px 5px; }
+            .time-box span { font-size: 1.6rem; margin-bottom: 2px; }
+            .time-box p { font-size: 0.65rem; letter-spacing: 1px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Area Header -->
+    <header id="main-header">
+        <a href="#" class="logo-text">HRGA-<span>LND</span></a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#beranda">Home</a></li>
+                <li><a href="#portal">System Portal</a></li>
+                <li><a href="#training">Training Schedule</a></li>
+                <li><a href="#team">Team Profile</a></li>
+                <li><a href="#kontak">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Area Hero Image -->
+    <section id="beranda" class="hero">
+        <div class="hero-content">
+            <h1>Sistem Manajemen Digital</h1>
+            <p>Portal Terintegrasi HRGA & Learning and Development. Meningkatkan efisiensi, kompetensi, dan standarisasi operasional perusahaan.</p>
+        </div>
+    </section>
+
+    <!-- Area Portal Akses -->
+    <section id="portal">
+        <div class="section-header-wrapper">
+            <h2 class="section-title">System Portal</h2>
+        </div>
+        <div class="portal-grid">
+            <div class="card">
+                <h3>Portal LMS</h3>
+                <p>Akses Learning Management System untuk modul pelatihan, materi karyawan, dan evaluasi pembelajaran.</p>
+                <a href="https://lms.askara-int.com/" class="btn" target="_blank">Masuk LMS</a>
+            </div>
+            
+            <div class="card">
+                <h3>Portal CMS</h3>
+                <p>Content Management System untuk pengelolaan data administratif, update sistem, dan pengaturan web.</p>
+                <a href="https://cmskinenta.vercel.app/login.html" class="btn" target="_blank">Masuk CMS</a>
+            </div>
+
+            <div class="card">
+                <h3>License Skill Digital</h3>
+                <p>Gunakan kamera HP atau laptop Anda untuk melakukan scan QR Code validasi lisensi keahlian karyawan secara real-time.</p>
+                <a href="#" class="btn">Buka Scanner</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Area Jadwal Training & History -->
+    <section id="training" class="training-section">
+        <div class="section-header-wrapper">
+            <h2 class="section-title">Training Schedule</h2>
+        </div>
+        
+        <!-- Countdown Next Training -->
+        <div class="countdown-container">
+            <h3>Upcoming Training: <span>HSE & 4S Awareness</span></h3>
+            <div class="countdown-timer">
+                <div class="time-box"><span id="days">00</span><p>Days</p></div>
+                <div class="time-box"><span id="hours">00</span><p>Hours</p></div>
+                <div class="time-box"><span id="minutes">00</span><p>Minutes</p></div>
+                <div class="time-box"><span id="seconds">00</span><p>Seconds</p></div>
+            </div>
+        </div>
+
+        <!-- History Training -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="color: var(--navy-primary); font-size: 1.4rem; margin: 0;">Training History (July 2026)</h3>
+        </div>
+        
+        <div class="history-table-wrapper">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Training Name</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>July 05, 2026</td>
+                        <td>Basic Wiring Harness & Bundling</td>
+                        <td>L&D - Skill</td>
+                        <td><span class="status-done">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>July 12, 2026</td>
+                        <td>Room Entry Rules Implementation</td>
+                        <td>HRGA</td>
+                        <td><span class="status-done">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>July 18, 2026</td>
+                        <td>Digital Skill License Introduction</td>
+                        <td>L&D</td>
+                        <td><span class="status-done">Completed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Elegant Button Annual Schedule Training -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="#" class="btn-annual">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.89 4 3.01 4.9 3.01 6L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5zM7 12h5v5H7z"/>
+                </svg>
+                View Annual Training Schedule
+            </a>
+        </div>
+    </section>
+
+    <!-- Area Profil Team -->
+    <section id="team">
+        <div class="section-header-wrapper">
+            <h2 class="section-title">Team Profile</h2>
+        </div>
+        <div class="team-grid">
+            <!-- Menambahkan inline style background-image untuk memanggil foto team dari repository GitHub -->
+            <div class="team-member">
+                <div class="avatar" style="background-image: url('team1.png');"></div>
+                <div class="team-info">
+                    <h4>Maulana Iqbal</h4>
+                    <p>Leader HR-Development</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <div class="avatar" style="background-image: url('team2.png');"></div>
+                <div class="team-info">
+                    <h4>Ato Suswanto</h4>
+                    <p>Staff LND-Development</p>
+                </div>
+            </div>
+            <div class="team-member">
+                <div class="avatar" style="background-image: url('team3.png');"></div>
+                <div class="team-info">
+                    <h4>Nama Anggota 3</h4>
+                    <p>Staff LND-Learning</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Area Kontak -->
+    <section id="kontak" class="contact-section">
+        <div class="section-header-wrapper">
+            <h2 class="section-title">Contact Us</h2>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h4>HR Report</h4>
+                <p>Layanan konsultasi dan pelaporan HRD.</p>
+                <a href="https://wa.me/6281319469191" target="_blank">WhatsApp HR</a>
+            </div>
+            <div class="contact-card">
+                <h4>GA Report</h4>
+                <p>Laporan fasilitas, HSE, dan sarana prasarana.</p>
+                <a href="https://wa.me/6281316569248" target="_blank">WhatsApp GA</a>
+            </div>
+            <div class="contact-card">
+                <h4>Kinenta Information Care</h4>
+                <p>Pusat informasi dan bantuan umum.</p>
+                <a href="https://wa.me/6281367771225" target="_blank">Contact KIC</a>
+            </div>
+            <div class="contact-card">
+                <h4>Our Instagram</h4>
+                <p>Ikuti update terbaru kegiatan perusahaan.</p>
+                <a href="https://www.instagram.com/kinenta_official" target="_blank">@kinenta_official</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 1. Logika Scroll Header
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Logika Countdown Timer
+        const targetDate = new Date("July 30, 2026 08:00:00").getTime();
+
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
