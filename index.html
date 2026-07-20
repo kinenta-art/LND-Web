@@ -95,7 +95,6 @@
         /* 3. HERO SECTION & ANIMATION */
         .hero {
             height: 100vh;
-            /* Pastikan file background.png ada di folder yang sama di GitHub */
             background: url('background.png') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
@@ -185,7 +184,7 @@
             margin-bottom: 40px;
         }
 
-        /* 5. PORTAL CARDS */
+        /* 5. PORTAL CARDS (DESKTOP) */
         .portal-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -241,6 +240,9 @@
             background-color: var(--sky-blue);
             box-shadow: 0 5px 15px rgba(0,164,228,0.4);
         }
+
+        /* Class untuk mengontrol elemen Mobile vs Desktop */
+        .mobile-only { display: none; }
 
         /* 6. TRAINING SCHEDULE & COUNTDOWN */
         .training-section {
@@ -427,7 +429,6 @@
             margin-right: 15px;
             border: 2px solid var(--sky-light);
             flex-shrink: 0;
-            /* Tambahan properti untuk memastikan foto fit di bulatan avatar */
             background-size: cover;
             background-position: center;
         }
@@ -490,7 +491,16 @@
         .contact-card p {
             color: #ccc;
             font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Tambahan styling untuk detail nomor telepon */
+        .contact-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--sky-light);
             margin-bottom: 15px;
+            letter-spacing: 1px;
         }
 
         .contact-card a {
@@ -509,20 +519,48 @@
             background: var(--sky-blue);
         }
 
-        /* 9. MEDIA QUERIES UNTUK RESPONSIVE (MOBILE ADJUSTMENTS) */
+        /* =========================================================================
+           9. MEDIA QUERIES UNTUK RESPONSIVE (MOBILE ADJUSTMENTS)
+           ========================================================================= */
         @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            header.scrolled { padding: 10px 20px; }
-            header .logo-text { font-size: 1.5rem; }
-            header nav ul.nav-links { display: none; } 
+            
+            /* 1. Navbar Menjadi Horizontal Scroll */
+            header { 
+                flex-direction: column; 
+                padding: 15px 15px; 
+                align-items: center; 
+            }
+            header.scrolled { padding: 10px 15px; }
+            header .logo-text { font-size: 1.5rem; margin-bottom: 10px; }
+            header nav {
+                width: 100%;
+            }
+            header nav ul.nav-links { 
+                display: flex;
+                justify-content: flex-start;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 5px;
+                gap: 20px;
+            }
+            header nav ul.nav-links > li { margin: 0; }
+            /* Menyembunyikan scrollbar agar rapi */
+            header nav ul.nav-links::-webkit-scrollbar { display: none; }
+            header nav ul.nav-links { -ms-overflow-style: none; scrollbar-width: none; }
 
-            .hero { padding-left: 5%; padding-bottom: 12%; padding-right: 5%; }
+            /* 2. Hero Teks di Tengah */
+            .hero { 
+                padding: 0 5%; 
+                justify-content: center; /* Memaksa ke vertikal tengah */
+                align-items: center;     /* Memaksa ke horizontal tengah */
+            }
             .hero-content {
                 max-width: 100%; 
+                text-align: center;
                 padding: 30px 20px;
                 border-left: none;
                 border-top: 4px solid var(--sky-blue); 
-                background: rgba(0, 33, 71, 0.65); 
+                background: rgba(0, 33, 71, 0.7); 
             }
             .hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
             .hero p { font-size: 0.95rem; }
@@ -530,12 +568,55 @@
             section { padding: 60px 5%; }
             .section-title { font-size: 1.8rem; margin-bottom: 35px; }
 
-            .portal-grid { gap: 20px; }
-            .portal-grid .card { padding: 25px 20px; }
-            .portal-grid .card p { display: none; } 
-            .portal-grid .card h3 { margin-bottom: 20px; font-size: 1.3rem; }
-            .portal-grid .btn { width: 100%; display: block; padding: 14px 0; }
+            /* 3. Logic Class untuk menyembunyikan Card Desktop & Memunculkan Accordion List */
+            .desktop-only { display: none; }
+            .mobile-only { display: block; }
+            
+            /* Styling Accordion Portal untuk HP */
+            .portal-mobile-accordion {
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 5px 20px rgba(0,33,71,0.08);
+                overflow: hidden;
+                border-top: 4px solid var(--navy-primary);
+            }
+            .accordion-btn {
+                width: 100%;
+                background: #fff;
+                color: var(--navy-primary);
+                font-size: 1.1rem;
+                font-weight: 700;
+                padding: 18px 20px;
+                border: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+            }
+            .accordion-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                background: var(--bg-light);
+            }
+            .accordion-content.open {
+                max-height: 250px; /* Cukup untuk memunculkan list */
+            }
+            .accordion-content a {
+                display: block;
+                padding: 15px 20px;
+                color: var(--navy-primary);
+                text-decoration: none;
+                font-weight: 600;
+                border-top: 1px solid #eef2f5;
+                text-align: center;
+            }
+            .accordion-content a:hover {
+                color: var(--sky-blue);
+                background: #fff;
+            }
 
+            /* Jadwal Training */
             .countdown-container { padding: 30px 15px; }
             .countdown-container h3 { font-size: 1.3rem; line-height: 1.5; text-align: center; }
             .countdown-container h3 span { 
@@ -543,11 +624,16 @@
                 margin-top: 5px; 
                 font-size: 1.4rem;
             }
-            
             .countdown-timer { gap: 10px; margin-top: 20px; }
             .time-box { min-width: 65px; padding: 12px 5px; }
             .time-box span { font-size: 1.6rem; margin-bottom: 2px; }
             .time-box p { font-size: 0.65rem; letter-spacing: 1px; }
+
+            /* 4. Penyederhanaan Contact Card */
+            .contact-card { padding: 20px 15px; } /* Padding diperkecil */
+            .contact-card h4 { font-size: 1rem; }
+            .contact-card p { font-size: 0.85rem; margin-bottom: 5px; }
+            .contact-number { font-size: 1rem; margin-bottom: 12px; }
         }
     </style>
 </head>
@@ -580,7 +666,11 @@
         <div class="section-header-wrapper">
             <h2 class="section-title">System Portal</h2>
         </div>
-        <div class="portal-grid">
+        
+        <!-- ==============================
+             PORTAL UI - DESKTOP ONLY 
+             ============================== -->
+        <div class="portal-grid desktop-only">
             <div class="card">
                 <h3>Portal LMS</h3>
                 <p>Akses Learning Management System untuk modul pelatihan, materi karyawan, dan evaluasi pembelajaran.</p>
@@ -599,6 +689,21 @@
                 <a href="#" class="btn">Buka Scanner</a>
             </div>
         </div>
+
+        <!-- ==============================
+             PORTAL UI - MOBILE ONLY (Accordion)
+             ============================== -->
+        <div class="portal-mobile-accordion mobile-only">
+            <button class="accordion-btn" onclick="togglePortalMenu()">
+                Buka Menu Portal <span id="portal-icon">▼</span>
+            </button>
+            <div class="accordion-content" id="portal-list">
+                <a href="https://lms.askara-int.com/" target="_blank">Masuk LMS</a>
+                <a href="https://cmskinenta.vercel.app/login.html" target="_blank">Masuk CMS</a>
+                <a href="#">Buka Scanner</a>
+            </div>
+        </div>
+
     </section>
 
     <!-- Area Jadwal Training & History -->
@@ -673,7 +778,6 @@
             <h2 class="section-title">Team Profile</h2>
         </div>
         <div class="team-grid">
-            <!-- Menambahkan inline style background-image untuk memanggil foto team dari repository GitHub -->
             <div class="team-member">
                 <div class="avatar" style="background-image: url('team1.png');"></div>
                 <div class="team-info">
@@ -684,14 +788,14 @@
             <div class="team-member">
                 <div class="avatar" style="background-image: url('team2.png');"></div>
                 <div class="team-info">
-                    <h4>Novita Melfiani</h4>
+                    <h4>Ato Suswanto</h4>
                     <p>Staff LND-Development</p>
                 </div>
             </div>
             <div class="team-member">
                 <div class="avatar" style="background-image: url('team3.png');"></div>
                 <div class="team-info">
-                    <h4>Urmila Salwa</h4>
+                    <h4>Nama Anggota 3</h4>
                     <p>Staff LND-Learning</p>
                 </div>
             </div>
@@ -707,22 +811,26 @@
             <div class="contact-card">
                 <h4>HR Report</h4>
                 <p>Layanan konsultasi dan pelaporan HRD.</p>
+                <p class="contact-number">+62 813-1946-9191</p>
                 <a href="https://wa.me/6281319469191" target="_blank">WhatsApp HR</a>
             </div>
             <div class="contact-card">
                 <h4>GA Report</h4>
                 <p>Laporan fasilitas, HSE, dan sarana prasarana.</p>
+                <p class="contact-number">+62 813-1656-9248</p>
                 <a href="https://wa.me/6281316569248" target="_blank">WhatsApp GA</a>
             </div>
             <div class="contact-card">
-                <h4>Kinenta Information Care</h4>
+                <h4>Kinenta Care (KIC)</h4>
                 <p>Pusat informasi dan bantuan umum.</p>
+                <p class="contact-number">+62 813-6777-1225</p>
                 <a href="https://wa.me/6281367771225" target="_blank">Contact KIC</a>
             </div>
             <div class="contact-card">
                 <h4>Our Instagram</h4>
                 <p>Ikuti update terbaru kegiatan perusahaan.</p>
-                <a href="https://www.instagram.com/kinenta_official" target="_blank">@kinenta_official</a>
+                <p class="contact-number">@kinenta_official</p>
+                <a href="https://www.instagram.com/kinenta_official" target="_blank">Buka Instagram</a>
             </div>
         </div>
     </section>
@@ -738,7 +846,20 @@
             }
         });
 
-        // 2. Logika Countdown Timer
+        // 2. Fungsi Toggle Portal List (Mobile)
+        function togglePortalMenu() {
+            const list = document.getElementById('portal-list');
+            const icon = document.getElementById('portal-icon');
+            if (list.classList.contains('open')) {
+                list.classList.remove('open');
+                icon.textContent = '▼';
+            } else {
+                list.classList.add('open');
+                icon.textContent = '▲';
+            }
+        }
+
+        // 3. Logika Countdown Timer
         const targetDate = new Date("July 30, 2026 08:00:00").getTime();
 
         const countdownInterval = setInterval(function() {
