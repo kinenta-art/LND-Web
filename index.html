@@ -132,7 +132,7 @@
             position: relative;
             z-index: 2;
             max-width: 55%; 
-            text-align: left !important; /* Terkunci Rata Kiri */
+            text-align: left !important; 
             color: #fff;
             background: rgba(0, 33, 71, 0.45);
             backdrop-filter: blur(10px);
@@ -331,14 +331,20 @@
         .history-table tr:hover { background-color: var(--sky-light); }
         .status-done { background: rgba(0, 164, 228, 0.1); color: var(--navy-primary); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
 
+        /* Elegan Button Annual (Revisi) */
         .btn-annual {
             display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 14px 35px; font-size: 0.95rem; font-weight: 600; color: var(--navy-primary);
-            background-color: #fff; border: 1px solid rgba(0, 33, 71, 0.15); border-radius: 30px;
+            padding: 14px 35px; font-size: 0.95rem; font-weight: 600; color: #fff;
+            background-color: var(--navy-primary); border: none; border-radius: 30px;
             text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 33, 71, 0.2); transition: all 0.3s ease;
         }
-        .btn-annual:hover { background-color: var(--navy-primary); color: #fff; border-color: var(--navy-primary); box-shadow: 0 6px 15px rgba(0, 33, 71, 0.2); transform: translateY(-2px); }
+        .btn-annual:hover { 
+            background-color: var(--sky-blue); 
+            color: #fff; 
+            box-shadow: 0 8px 20px rgba(0, 164, 228, 0.4); 
+            transform: translateY(-5px); 
+        }
         .btn-annual svg { width: 20px; height: 20px; fill: currentColor; transition: fill 0.3s ease; }
 
         /* 8. PROFIL TEAM */
@@ -605,7 +611,7 @@
             </table>
         </div>
 
-        <!-- Elegant Button Annual Schedule Training -->
+        <!-- Elegant Button Annual Schedule Training (Revisi Warna) -->
         <div style="text-align: center; margin-top: 30px;">
             <a href="#" class="btn-annual">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -632,14 +638,14 @@
             <div class="team-member">
                 <div class="avatar" style="background-image: url('team2.png');"></div>
                 <div class="team-info">
-                    <h4>Ato Suswanto</h4>
+                    <h4>Novita Melfiani</h4>
                     <p>Staff LND-Development</p>
                 </div>
             </div>
             <div class="team-member">
                 <div class="avatar" style="background-image: url('team3.png');"></div>
                 <div class="team-info">
-                    <h4>Nama Anggota 3</h4>
+                    <h4>Urmila Salwa</h4>
                     <p>Staff LND-Learning</p>
                 </div>
             </div>
@@ -681,7 +687,7 @@
 
     <!-- Floating Action Button (FAB) KIC -->
     <a href="https://wa.me/6281367771225" target="_blank" class="fab-lnd">
-         Hubungi LND
+        💬 Hubungi LND
     </a>
 
     <script>
@@ -716,7 +722,6 @@
             document.getElementById('pin-modal').classList.add('active');
             pinInput.value = '';
             pinError.innerText = '';
-            // Memberi sedikit delay agar transisi pop-up selesai sebelum keyboard muncul di HP
             setTimeout(() => { pinInput.focus(); }, 100);
         }
 
@@ -725,7 +730,6 @@
         }
 
         pinInput.addEventListener('input', function(e) {
-            // Hanya mengecek jika panjang digit sudah pas 10
             if (this.value.length === 10) {
                 if (this.value === '5555522222') {
                     pinError.style.color = "green";
@@ -736,10 +740,10 @@
                 } else {
                     pinError.style.color = "#ff4757";
                     pinError.innerText = 'Anda tidak punya hak akses portal Admin LND.';
-                    this.value = ''; // Kosongkan otomatis jika salah
+                    this.value = ''; 
                 }
             } else {
-                pinError.innerText = ''; // Hilangkan pesan error jika user sedang mengetik
+                pinError.innerText = ''; 
             }
         });
 
@@ -774,34 +778,26 @@
         const loopSections = ['beranda', 'training', 'kontak'];
         let loopIndex = 0;
 
-        // Reset timer jika user menyentuh/menggerakkan layar
         ['mousemove', 'touchstart', 'wheel', 'keydown', 'click'].forEach(evt => {
             window.addEventListener(evt, () => {
                 lastInteraction = Date.now();
-                autoLoopActive = false; // Membatalkan looping jika user mengambil alih
+                autoLoopActive = false; 
             });
         });
 
-        // Check setiap 10 detik
         setInterval(() => {
             let now = Date.now();
-            
-            // Jika tidak ada interaksi selama 10 detik
             if (now - lastInteraction >= 10000) {
-                
-                // Syarat Trigger: Jika user sedang berada di halaman Home (paling atas)
                 if (window.scrollY < 100 && !autoLoopActive) {
                     autoLoopActive = true;
                     loopIndex = 0;
                 }
-                
-                // Jika looping sedang aktif, jalankan navigasi otomatis
                 if (autoLoopActive) {
                     loopIndex = (loopIndex + 1) % loopSections.length;
                     document.getElementById(loopSections[loopIndex]).scrollIntoView({ behavior: 'smooth' });
                 }
             }
-        }, 10000); // Trigger perpindahan dieksekusi per 10 detik
+        }, 10000); 
 
     </script>
 </body>
