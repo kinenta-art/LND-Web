@@ -92,6 +92,9 @@
             color: var(--sky-blue);
         }
 
+        /* Toggle Teks Menu (Global) */
+        .mobile-text { display: none; }
+
         /* 3. HERO SECTION & ANIMATION */
         .hero {
             height: 100vh;
@@ -494,7 +497,6 @@
             margin-bottom: 10px;
         }
         
-        /* Tambahan styling untuk detail nomor telepon */
         .contact-number {
             font-size: 1.1rem;
             font-weight: bold;
@@ -524,26 +526,43 @@
            ========================================================================= */
         @media (max-width: 768px) {
             
-            /* 1. Navbar Menjadi Horizontal Scroll */
+            /* Logic Teks Menu Khusus Mobile */
+            .desktop-text { display: none; }
+            .mobile-text { display: inline; }
+
+            /* 1. Navbar Rata Kiri & Horizontal Scroll Fix 3 Kolom */
             header { 
                 flex-direction: column; 
-                padding: 15px 15px; 
-                align-items: center; 
+                padding: 15px 5%; 
+                align-items: flex-start; /* Memastikan Logo HRGA-LND Rata Kiri */
             }
-            header.scrolled { padding: 10px 15px; }
-            header .logo-text { font-size: 1.5rem; margin-bottom: 10px; }
-            header nav {
-                width: 100%;
-            }
+            header.scrolled { padding: 10px 5%; }
+            header .logo-text { font-size: 1.5rem; margin-bottom: 12px; }
+            header nav { width: 100%; }
+            
             header nav ul.nav-links { 
                 display: flex;
+                flex-wrap: nowrap;
                 justify-content: flex-start;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 5px;
-                gap: 20px;
+                gap: 0; /* Gap dihilangkan agar lebar menu presisi */
+                width: 100%;
             }
-            header nav ul.nav-links > li { margin: 0; }
+            
+            header nav ul.nav-links > li { 
+                flex: 0 0 33.33%; /* Tiap menu mengambil tepat 1/3 layar. Menu ke-4 dan 5 akan bersembunyi di kanan */
+                margin: 0;
+            }
+
+            header nav ul.nav-links > li > a { 
+                display: block;
+                text-align: left; /* Teks menu juga rata kiri selaras dengan logo */
+                font-size: 0.95rem;
+                white-space: nowrap; /* Mencegah teks turun ke bawah */
+            }
+
             /* Menyembunyikan scrollbar agar rapi */
             header nav ul.nav-links::-webkit-scrollbar { display: none; }
             header nav ul.nav-links { -ms-overflow-style: none; scrollbar-width: none; }
@@ -568,11 +587,10 @@
             section { padding: 60px 5%; }
             .section-title { font-size: 1.8rem; margin-bottom: 35px; }
 
-            /* 3. Logic Class untuk menyembunyikan Card Desktop & Memunculkan Accordion List */
+            /* 3. Logic Class Card Desktop & Accordion List */
             .desktop-only { display: none; }
             .mobile-only { display: block; }
             
-            /* Styling Accordion Portal untuk HP */
             .portal-mobile-accordion {
                 background: #fff;
                 border-radius: 12px;
@@ -600,7 +618,7 @@
                 background: var(--bg-light);
             }
             .accordion-content.open {
-                max-height: 250px; /* Cukup untuk memunculkan list */
+                max-height: 250px; 
             }
             .accordion-content a {
                 display: block;
@@ -630,7 +648,7 @@
             .time-box p { font-size: 0.65rem; letter-spacing: 1px; }
 
             /* 4. Penyederhanaan Contact Card */
-            .contact-card { padding: 20px 15px; } /* Padding diperkecil */
+            .contact-card { padding: 20px 15px; } 
             .contact-card h4 { font-size: 1rem; }
             .contact-card p { font-size: 0.85rem; margin-bottom: 5px; }
             .contact-number { font-size: 1rem; margin-bottom: 12px; }
@@ -644,10 +662,11 @@
         <a href="#" class="logo-text">HRGA-<span>LND</span></a>
         <nav>
             <ul class="nav-links">
+                <!-- Teks akan otomatis berganti berkat class desktop-text dan mobile-text -->
                 <li><a href="#beranda">Home</a></li>
-                <li><a href="#portal">System Portal</a></li>
-                <li><a href="#training">Training Schedule</a></li>
-                <li><a href="#team">Team Profile</a></li>
+                <li><a href="#portal"><span class="desktop-text">System Portal</span><span class="mobile-text">Portal</span></a></li>
+                <li><a href="#training"><span class="desktop-text">Training Schedule</span><span class="mobile-text">Schedule</span></a></li>
+                <li><a href="#team"><span class="desktop-text">Team Profile</span><span class="mobile-text">Profile</span></a></li>
                 <li><a href="#kontak">Contact</a></li>
             </ul>
         </nav>
